@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Import:
 import RPi.GPIO as GPIO  # Import Raspberry Pi GPIO library
 

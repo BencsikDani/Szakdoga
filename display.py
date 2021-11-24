@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Import:
 from globals import Globals
 import adafruit_ssd1306
@@ -8,6 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 from haapi import HAAPI
 import led
 from ioe import IOE
+from rtc import RTC
 
 
 class Display():
@@ -93,7 +95,9 @@ class Display():
         image = Image.new('1', (Globals.width, Globals.height))
         draw = ImageDraw.Draw(image)
 
-        text = time.strftime("%H:%M:%S", time.localtime())
+        #text = time.strftime("%H:%M:%S", time.localtime())
+        dt = RTC.getRTC()
+        text = str(dt.tm_hour).zfill(2) + ":" + str(dt.tm_min).zfill(2) + ":" + str(dt.tm_sec).zfill(2)
         Display.drawText(draw, text, Globals.width // 2, Globals.height // 2, "middle", "Thin", 20)
 
         display.image(image)
@@ -112,50 +116,34 @@ class Display():
         vBorder2 = Globals.height  # = 64
 
         if pos == 1:
-            draw.rounded_rectangle((0 + margin, 0, hBorder1 - margin, vBorder1 - (2 * margin)), radius=radius, fill=0,
-                                   outline=1, width=6)
+            draw.rounded_rectangle((0 + margin, 0, hBorder1 - margin, vBorder1 - (2 * margin)), radius=radius, fill=0, outline=1, width=6)
         else:
-            draw.rounded_rectangle((0 + margin, 0, hBorder1 - margin, vBorder1 - (2 * margin)), radius=radius, fill=0,
-                                   outline=1, width=3)
+            draw.rounded_rectangle((0 + margin, 0, hBorder1 - margin, vBorder1 - (2 * margin)), radius=radius, fill=0, outline=1, width=3)
 
         if pos == 2:
-            draw.rounded_rectangle((hBorder1 + margin, 0, hBorder2 - margin, vBorder1 - (2 * margin)), radius=radius,
-                                   fill=0, outline=1, width=6)
+            draw.rounded_rectangle((hBorder1 + margin, 0, hBorder2 - margin, vBorder1 - (2 * margin)), radius=radius, fill=0, outline=1, width=6)
         else:
-            draw.rounded_rectangle((hBorder1 + margin, 0, hBorder2 - margin, vBorder1 - (2 * margin)), radius=radius,
-                                   fill=0, outline=1, width=3)
+            draw.rounded_rectangle((hBorder1 + margin, 0, hBorder2 - margin, vBorder1 - (2 * margin)), radius=radius, fill=0, outline=1, width=3)
 
         if pos == 3:
-            draw.rounded_rectangle((hBorder2 + margin, 0, hBorder3 - margin, vBorder1 - (2 * margin)), radius=radius,
-                                   fill=0, outline=1, width=6)
+            draw.rounded_rectangle((hBorder2 + margin, 0, hBorder3 - margin, vBorder1 - (2 * margin)), radius=radius, fill=0, outline=1, width=6)
         else:
-            draw.rounded_rectangle((hBorder2 + margin, 0, hBorder3 - margin, vBorder1 - (2 * margin)), radius=radius,
-                                   fill=0, outline=1, width=3)
+            draw.rounded_rectangle((hBorder2 + margin, 0, hBorder3 - margin, vBorder1 - (2 * margin)), radius=radius, fill=0, outline=1, width=3)
 
         if pos == 4:
-            draw.rounded_rectangle((0 + margin, vBorder1, hBorder1 - margin, vBorder2 - (2 * margin)), radius=radius,
-                                   fill=0, outline=1, width=6)
+            draw.rounded_rectangle((0 + margin, vBorder1, hBorder1 - margin, vBorder2 - (2 * margin)), radius=radius, fill=0, outline=1, width=6)
         else:
-            draw.rounded_rectangle((0 + margin, vBorder1, hBorder1 - margin, vBorder2 - (2 * margin)), radius=radius,
-                                   fill=0, outline=1, width=3)
+            draw.rounded_rectangle((0 + margin, vBorder1, hBorder1 - margin, vBorder2 - (2 * margin)), radius=radius, fill=0, outline=1, width=3)
 
         if pos == 5:
-            draw.rounded_rectangle((hBorder1 + margin, vBorder1, hBorder2 - margin, vBorder2 - (2 * margin)),
-                                   radius=radius,
-                                   fill=0, outline=1, width=6)
+            draw.rounded_rectangle((hBorder1 + margin, vBorder1, hBorder2 - margin, vBorder2 - (2 * margin)), radius=radius, fill=0, outline=1, width=6)
         else:
-            draw.rounded_rectangle((hBorder1 + margin, vBorder1, hBorder2 - margin, vBorder2 - (2 * margin)),
-                                   radius=radius,
-                                   fill=0, outline=1, width=3)
+            draw.rounded_rectangle((hBorder1 + margin, vBorder1, hBorder2 - margin, vBorder2 - (2 * margin)), radius=radius, fill=0, outline=1, width=3)
 
         if pos == 6:
-            draw.rounded_rectangle((hBorder2 + margin, vBorder1, hBorder3 - margin, vBorder2 - (2 * margin)),
-                                   radius=radius,
-                                   fill=0, outline=1, width=6)
+            draw.rounded_rectangle((hBorder2 + margin, vBorder1, hBorder3 - margin, vBorder2 - (2 * margin)), radius=radius, fill=0, outline=1, width=6)
         else:
-            draw.rounded_rectangle((hBorder2 + margin, vBorder1, hBorder3 - margin, vBorder2 - (2 * margin)),
-                                   radius=radius,
-                                   fill=0, outline=1, width=3)
+            draw.rounded_rectangle((hBorder2 + margin, vBorder1, hBorder3 - margin, vBorder2 - (2 * margin)), radius=radius, fill=0, outline=1, width=3)
 
         tempImage = Image.open("/home/pi/Documents/images/temp.png")
         image.paste(tempImage, box=(9, 7))

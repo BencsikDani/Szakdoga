@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Import:
 from globals import Globals
 import time
