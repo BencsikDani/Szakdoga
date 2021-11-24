@@ -4,7 +4,6 @@ from globals import Globals
 import adafruit_ssd1306
 import board
 import digitalio
-import time
 from PIL import Image, ImageDraw, ImageFont
 from haapi import HAAPI
 import led
@@ -62,12 +61,12 @@ class Display():
 
     def drawLEDSwitch(image, images, iconPos, state, xy):
         if iconPos == Globals.LEDMenuPos:
-            if state:
+            if state == True:
                 image.paste(images[0], box=xy)
             else:
                 image.paste(images[1], box=xy)
         else:
-            if state:
+            if state == True:
                 image.paste(images[2], box=xy)
             else:
                 image.paste(images[3], box=xy)
@@ -75,15 +74,30 @@ class Display():
 
     def drawOutputSwitch(image, images, iconPos, state, xy):
         if iconPos == Globals.outputMenuPos:
-            if state:
+            if state == True:
                 image.paste(images[0], box=xy)
             else:
                 image.paste(images[1], box=xy)
         else:
-            if state:
+            if state == True:
                 image.paste(images[2], box=xy)
             else:
                 image.paste(images[3], box=xy)
+        return
+
+    def drawOffline(display):
+        image = Image.new('1', (Globals.width, Globals.height))
+        draw = ImageDraw.Draw(image)
+
+        Display.drawText(draw, "A Home Assistant", Globals.width // 2, 8, "middle", "Medium", 15)
+        Display.drawText(draw, "nem elérhető :(", Globals.width // 2, 26, "middle", "Medium", 15)
+
+        draw.rounded_rectangle((46, 39, 82, 63), radius=11, fill=0, outline=1, width=6)
+        Display.drawText(draw, "OK", 63, 50, "middle", "Thin", 10)
+
+        image.save("/home/pi/Documents/images/offline.png")
+        display.image(image)
+        display.show()
         return
 
     def drawBlack(display):
@@ -164,50 +178,50 @@ class Display():
         return
 
     def drawTempMenu(display):
-        image = Image.new('1', (Globals.width, Globals.height))
-        draw = ImageDraw.Draw(image)
+        temp = HAAPI.getTemperature()
+        if temp == -1:
+            Globals.currentScreenState = Globals.screenState.OFFLINE
+        else:
+            image = Image.new('1', (Globals.width, Globals.height))
+            draw = ImageDraw.Draw(image)
 
-        Display.drawText(draw, "Hőmérséklet:", 5, 5, "topleft", "Medium", 15)
-        Display.drawText(draw, HAAPI.getTemperature() + " °C", 5, 30, "topleft", "Thin", 15)
+            Display.drawText(draw, "Hőmérséklet:", 5, 5, "topleft", "Medium", 15)
+            Display.drawText(draw, str(temp) + " °C", 5, 30, "topleft", "Thin", 15)
 
-        Display.drawBackButton(image, draw, True)
+            Display.drawBackButton(image, draw, True)
 
-        display.image(image)
-        display.show()
+            display.image(image)
+            display.show()
         return
 
     def drawLightMenu(display):
-        image = Image.new('1', (Globals.width, Globals.height))
-        draw = ImageDraw.Draw(image)
+        light = HAAPI.getLight()
+        if light == -1:
+            Globals.currentScreenState = Globals.screenState.OFFLINE
+        else:
+            image = Image.new('1', (Globals.width, Globals.height))
+            draw = ImageDraw.Draw(image)
 
-        Display.drawText(draw, "Fényerősség:", 5, 5, "topleft", "Medium", 15)
-        Display.drawText(draw, HAAPI.getLight() + " lx", 5, 30, "topleft", "Thin", 15)
+            Display.drawText(draw, "Fényerősség:", 5, 5, "topleft", "Medium", 15)
+            Display.drawText(draw, str(light) + " lx", 5, 30, "topleft", "Thin", 15)
 
-        Display.drawBackButton(image, draw, True)
+            Display.drawBackButton(image, draw, True)
 
-        display.image(image)
-        display.show()
+            display.image(image)
+            display.show()
         return
 
     def drawLEDMenu(display, pos):
         image = Image.new('1', (Globals.width, Globals.height))
         draw = ImageDraw.Draw(image)
 
-        LED1state = led.getLED(1)
-        LED2state = led.getLED(2)
-        LED3state = led.getLED(3)
-        LED4state = led.getLED(4)
-        extLED1state = HAAPI.getLED1()
-        extLED2state = HAAPI.getLED2()
-        sonoffLEDstate = HAAPI.getSonoff()
-
-        Display.drawLEDSwitch(image, Display.swArray, 1, LED1state, (2, 0))
-        Display.drawLEDSwitch(image, Display.swArray, 2, LED2state, (19, 0))
-        Display.drawLEDSwitch(image, Display.swArray, 3, LED3state, (2, 32))
-        Display.drawLEDSwitch(image, Display.swArray, 4, LED4state, (19, 32))
-        Display.drawLEDSwitch(image, Display.swArray, 5, extLED1state, (38, 16))
-        Display.drawLEDSwitch(image, Display.swArray, 6, extLED2state, (55, 16))
-        Display.drawLEDSwitch(image, Display.swArray, 7, sonoffLEDstate, (78, 16))
+        Display.drawLEDSwitch(image, Display.swArray, 1, led.getLED(1), (2, 0))
+        Display.drawLEDSwitch(image, Display.swArray, 2, led.getLED(2), (19, 0))
+        Display.drawLEDSwitch(image, Display.swArray, 3, led.getLED(3), (2, 32))
+        Display.drawLEDSwitch(image, Display.swArray, 4, led.getLED(4), (19, 32))
+        Display.drawLEDSwitch(image, Display.swArray, 5, HAAPI.getLED1(), (38, 16))
+        Display.drawLEDSwitch(image, Display.swArray, 6, HAAPI.getLED2(), (55, 16))
+        Display.drawLEDSwitch(image, Display.swArray, 7, HAAPI.getSonoff(), (78, 16))
 
         if pos == 8:
             Display.drawBackButton(image, draw, True)

@@ -92,6 +92,8 @@ def b3_callback(self):
             HAAPI.toggleRelay()
         elif Globals.outputMenuPos == 6:
             Globals.currentScreenState = Globals.screenState.MENU
+    elif Globals.currentScreenState == Globals.screenState.OFFLINE:
+        Globals.currentScreenState = Globals.screenState.MENU
 
     time.sleep(Globals.debounceTime)
     return

@@ -53,28 +53,28 @@ class IOE:
     def getInput(input):
         # input = 1...4
         readByte = IOE.bus.read_byte_data(IOE.device, IOE.gpioa)
-        if input == 1:
-            return readByte & 0b0001
-        elif input == 2:
-            return readByte & 0b0010
-        elif input == 3:
-            return readByte & 0b0100
-        elif input == 4:
-            return readByte & 0b1000
+        if input == 1 and readByte & 0b0001 != 0:
+            return True
+        elif input == 2 and readByte & 0b0010 != 0:
+            return True
+        elif input == 3 and readByte & 0b0100 != 0:
+            return True
+        elif input == 4 and readByte & 0b1000 != 0:
+            return True
         else:
             return False
 
     def getOutput(output):
         # output = 1...4
         readByte = IOE.bus.read_byte_data(IOE.device, IOE.gpiob)
-        if output == 1:
-            return readByte & 0b0001
-        elif output == 2:
-            return readByte & 0b0010
-        elif output == 3:
-            return readByte & 0b0100
-        elif output == 4:
-            return readByte & 0b1000
+        if output == 1 and readByte & 0b0001 != 0:
+            return True
+        elif output == 2 and readByte & 0b0010 != 0:
+            return True
+        elif output == 3 and readByte & 0b0100 != 0:
+            return True
+        elif output == 4 and readByte & 0b1000 != 0:
+            return True
         else:
             return False
 
