@@ -1,18 +1,25 @@
+# -*- coding: utf-8 -*-
 # Import:
+import sys
+sys.path.append("/home/pi/.local/lib/python3.7/site-packages")
+
 from globals import Globals
 import RPi.GPIO as GPIO  # Import Raspberry Pi GPIO library
 import buttons
 from display import Display
 from ioe import IOE
 import led
+from rtc import RTC
 
 # Main Code
+
 
 GPIO.cleanup()
 # GPIO.setwarnings(False) # Ignore warning for now
 GPIO.setmode(GPIO.BCM)  # Use physical pin numbering
 
 oled = Display.initOled()
+rtc = RTC.initRTC()
 buttons.initButtons()
 IOE.initIoe()
 led.ledInit()
