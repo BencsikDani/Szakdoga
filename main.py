@@ -41,6 +41,8 @@ while True:
         Display.drawInputMenu(oled)
     elif Globals.currentScreenState == Globals.screenState.OUTPUTMENU:
         Display.drawOutputMenu(oled, Globals.outputMenuPos)
+    elif Globals.currentScreenState == Globals.screenState.OFFLINE:
+        Display.drawOffline(oled)
 
 
 

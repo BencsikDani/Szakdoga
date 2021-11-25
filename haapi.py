@@ -17,56 +17,74 @@ class HAAPI:
     }
 
     def getTemperature():
-        response = requests.get(HAAPI.urlBase + HAAPI.temperatureStateTag, headers=HAAPI.headers)
-        data = json.loads(response.text)
-        #print("Hőmérséklet: " + data["state"] + " °C")
-        if data["state"] == "unavailable":
-            return "??.?"
-        else:
-            return data["state"]
+        try:
+            response = requests.get(HAAPI.urlBase + HAAPI.temperatureStateTag, headers=HAAPI.headers)
+            data = json.loads(response.text)
+            # print("Hőmérséklet: " + data["state"] + " °C")
+            if data["state"] == "unavailable":
+                return "??.?"
+            else:
+                return data["state"]
+        except:
+            return -1
 
     def getLight():
-        response = requests.get(HAAPI.urlBase + HAAPI.lightStateTag, headers=HAAPI.headers)
-        data = json.loads(response.text)
-        #print("Fényerősség: " + data["state"] + " lx")
-        if data["state"] == "unavailable":
-            return "??.?"
-        else:
-            return data["state"]
+        try:
+            response = requests.get(HAAPI.urlBase + HAAPI.lightStateTag, headers=HAAPI.headers)
+            data = json.loads(response.text)
+            #print("Fényerősség: " + data["state"] + " lx")
+            if data["state"] == "unavailable":
+                return "??.?"
+            else:
+                return data["state"]
+        except:
+            return -1
 
     def getLED1():
-        response = requests.get(HAAPI.urlBase + HAAPI.LED1StateTag, headers=HAAPI.headers)
-        data = json.loads(response.text)
-        if data["state"] == "on":
-            return True
-        elif data["state"] == "off":
-            return False
+        try:
+            response = requests.get(HAAPI.urlBase + HAAPI.LED1StateTag, headers=HAAPI.headers)
+            data = json.loads(response.text)
+            if data["state"] == "on":
+                return True
+            elif data["state"] == "off":
+                return False
+        except:
+            return -1
 
     def getLED2():
-        response = requests.get(HAAPI.urlBase + HAAPI.LED2StateTag, headers=HAAPI.headers)
-        data = json.loads(response.text)
-        if data["state"] == "on":
-            return True
-        elif data["state"] == "off":
-            return False
+        try:
+            response = requests.get(HAAPI.urlBase + HAAPI.LED2StateTag, headers=HAAPI.headers)
+            data = json.loads(response.text)
+            if data["state"] == "on":
+                return True
+            elif data["state"] == "off":
+                return False
+        except:
+            return -1
 
     def setLED1(state):
-        if state:
-            command = "api/services/light/turn_on"
-        elif not state:
-            command = "api/services/light/turn_off"
+        try:
+            if state:
+                command = "api/services/light/turn_on"
+            elif not state:
+                command = "api/services/light/turn_off"
 
-        entity = {"entity_id": "light.led1"}
-        requests.post(HAAPI.urlBase + command, headers=HAAPI.headers, json=entity)
+            entity = {"entity_id": "light.led1"}
+            requests.post(HAAPI.urlBase + command, headers=HAAPI.headers, json=entity)
+        except:
+            return -1
 
     def setLED2(state):
-        if state:
-            command = "api/services/light/turn_on"
-        elif not state:
-            command = "api/services/light/turn_off"
+        try:
+            if state:
+                command = "api/services/light/turn_on"
+            elif not state:
+                command = "api/services/light/turn_off"
 
-        entity = {"entity_id": "light.led2"}
-        requests.post(HAAPI.urlBase + command, headers=HAAPI.headers, json=entity)
+            entity = {"entity_id": "light.led2"}
+            requests.post(HAAPI.urlBase + command, headers=HAAPI.headers, json=entity)
+        except:
+            return -1
 
     def toggleLED(led):
         if led == 1:
@@ -81,21 +99,27 @@ class HAAPI:
                 HAAPI.setLED2(1)
 
     def getSonoff():
-        response = requests.get(HAAPI.urlBase + HAAPI.sonoffStateTag, headers=HAAPI.headers)
-        data = json.loads(response.text)
-        if data["state"] == "on":
-            return True
-        elif data["state"] == "off":
-            return False
+        try:
+            response = requests.get(HAAPI.urlBase + HAAPI.sonoffStateTag, headers=HAAPI.headers)
+            data = json.loads(response.text)
+            if data["state"] == "on":
+                return True
+            elif data["state"] == "off":
+                return False
+        except:
+            return -1
 
     def setSonoff(state):
-        if state:
-            command = "api/services/light/turn_on"
-        elif not state:
-            command = "api/services/light/turn_off"
+        try:
+            if state:
+                command = "api/services/light/turn_on"
+            elif not state:
+                command = "api/services/light/turn_off"
 
-        entity = {"entity_id": "light.1001018297"}
-        requests.post(HAAPI.urlBase + command, headers=HAAPI.headers, json=entity)
+            entity = {"entity_id": "light.1001018297"}
+            requests.post(HAAPI.urlBase + command, headers=HAAPI.headers, json=entity)
+        except:
+            return -1
 
     def toggleSonoff():
         if HAAPI.getSonoff():
@@ -105,22 +129,27 @@ class HAAPI:
         return
 
     def getRelay():
-        response = requests.get(HAAPI.urlBase + HAAPI.relayStateTag, headers=HAAPI.headers)
-        data = json.loads(response.text)
-        if data["state"] == "on":
-            return True
-        elif data["state"] == "off":
-            return False
-        return
+        try:
+            response = requests.get(HAAPI.urlBase + HAAPI.relayStateTag, headers=HAAPI.headers)
+            data = json.loads(response.text)
+            if data["state"] == "on":
+                return True
+            elif data["state"] == "off":
+                return False
+        except:
+            return -1
 
     def setRelay(state):
-        if state:
-            command = "api/services/switch/turn_on"
-        elif not state:
-            command = "api/services/switch/turn_off"
+        try:
+            if state:
+                command = "api/services/switch/turn_on"
+            elif not state:
+                command = "api/services/switch/turn_off"
 
-        entity = {"entity_id": "switch.relay"}
-        requests.post(HAAPI.urlBase + command, headers=HAAPI.headers, json=entity)
+            entity = {"entity_id": "switch.relay"}
+            requests.post(HAAPI.urlBase + command, headers=HAAPI.headers, json=entity)
+        except:
+            return -1
 
     def toggleRelay():
         if HAAPI.getRelay():

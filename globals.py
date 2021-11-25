@@ -23,5 +23,6 @@ class Globals:
         LEDMENU = 6
         INPUTMENU = 7
         OUTPUTMENU = 8
+        OFFLINE = 9
 
     currentScreenState = screenState.CLOCK
