@@ -5,24 +5,24 @@ sys.path.append("/home/pi/.local/lib/python3.7/site-packages")
 
 from globals import Globals
 import RPi.GPIO as GPIO  # Import Raspberry Pi GPIO library
-import buttons
+from buttons import Buttons
 from display import Display
 from ioe import IOE
-import led
-from rtc import RTC
+from led import LED
+from sleeper import Sleeper
+
 
 # Main Code
-
 
 GPIO.cleanup()
 # GPIO.setwarnings(False) # Ignore warning for now
 GPIO.setmode(GPIO.BCM)  # Use physical pin numbering
 
 oled = Display.initOled()
-rtc = RTC.initRTC()
-buttons.initButtons()
+Buttons.initButtons()
 IOE.initIoe()
-led.ledInit()
+LED.ledInit()
+Sleeper.resetCount()
 
 while True:
     if Globals.currentScreenState == Globals.screenState.BLACK:
@@ -44,36 +44,4 @@ while True:
     elif Globals.currentScreenState == Globals.screenState.OFFLINE:
         Display.drawOffline(oled)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        #time.sleep(1)
+    Sleeper.checkIfTimeRanOut()
