@@ -3,7 +3,7 @@ from globals import Globals
 
 class Sleeper:
     startTime = time.time()
-    interval = 5
+    interval = 60
 
     def resetCount():
         Sleeper.startTime = time.time()
