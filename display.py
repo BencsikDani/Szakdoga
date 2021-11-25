@@ -6,9 +6,10 @@ import board
 import digitalio
 from PIL import Image, ImageDraw, ImageFont
 from haapi import HAAPI
-import led
+from led import LED
 from ioe import IOE
 from rtc import RTC
+import time
 
 
 class Display():
@@ -109,9 +110,9 @@ class Display():
         image = Image.new('1', (Globals.width, Globals.height))
         draw = ImageDraw.Draw(image)
 
-        #text = time.strftime("%H:%M:%S", time.localtime())
-        dt = RTC.getRTC()
-        text = str(dt.tm_hour).zfill(2) + ":" + str(dt.tm_min).zfill(2) + ":" + str(dt.tm_sec).zfill(2)
+        text = time.strftime("%H:%M:%S", time.localtime())
+        #dt = RTC.getRTC()
+        #text = str(dt.hour).zfill(2) + ":" + str(dt.minute).zfill(2) + ":" + str(dt.second).zfill(2)
         Display.drawText(draw, text, Globals.width // 2, Globals.height // 2, "middle", "Thin", 20)
 
         display.image(image)
@@ -215,10 +216,10 @@ class Display():
         image = Image.new('1', (Globals.width, Globals.height))
         draw = ImageDraw.Draw(image)
 
-        Display.drawLEDSwitch(image, Display.swArray, 1, led.getLED(1), (2, 0))
-        Display.drawLEDSwitch(image, Display.swArray, 2, led.getLED(2), (19, 0))
-        Display.drawLEDSwitch(image, Display.swArray, 3, led.getLED(3), (2, 32))
-        Display.drawLEDSwitch(image, Display.swArray, 4, led.getLED(4), (19, 32))
+        Display.drawLEDSwitch(image, Display.swArray, 1, LED.getLED(1), (2, 0))
+        Display.drawLEDSwitch(image, Display.swArray, 2, LED.getLED(2), (19, 0))
+        Display.drawLEDSwitch(image, Display.swArray, 3, LED.getLED(3), (2, 32))
+        Display.drawLEDSwitch(image, Display.swArray, 4, LED.getLED(4), (19, 32))
         Display.drawLEDSwitch(image, Display.swArray, 5, HAAPI.getLED1(), (38, 16))
         Display.drawLEDSwitch(image, Display.swArray, 6, HAAPI.getLED2(), (55, 16))
         Display.drawLEDSwitch(image, Display.swArray, 7, HAAPI.getSonoff(), (78, 16))

@@ -5,10 +5,7 @@ from enum import Enum
 class Globals:
     width = 128
     height = 64
-    border = 5
 
-    text = "Szia Csengeee"
-    wait = 1.5
     menuPos = 1
     LEDMenuPos = 1
     outputMenuPos = 1
